@@ -1,0 +1,19 @@
+{
+  "name": "lambda-scale",
+  "version": "0.0.1",
+  "description": "Scale Heroku Dyno Formation",
+  "main": "index.js",
+  "dependencies": {
+    "heroku-client": "^3.1.0"
+  },
+  "devDependencies": {},
+  "author": {
+    "name": "Watermark Dev",
+    "email": "dev@watermark.org"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jpowell/lambda-scale.git"
+  }
+}
