@@ -1,0 +1,23 @@
+{
+  "wcc-paper-signs-staging": {
+    "default": [
+      {
+        "quantity": 1,
+        "size": "standard-1X",
+        "type": "worker"
+      },
+      {
+        "quantity": 1,
+        "size": "standard-1X",
+        "type": "web"
+      }
+    ],
+    "nightly_worker_ramp_up": [
+      {
+        "quantity": 2,
+        "size": "standard-2X",
+        "type": "worker"
+      }
+    ]
+  }
+}

@@ -1,22 +1,26 @@
 const Heroku = require('heroku-client')
-const heroku = new Heroku({ token: process.env.HEROKU_API_TOKEN })
-const appId = process.env.HEROKU_APP_ID
+const decrypt = require('./decrypt')
+const config = require('./dyno-config')
 
-exports.handle = function(event, context, callback) {
-  console.log('Received event: %j', event)
-  const { appId, updates } = event
+exports.handler = async (ev, context, callback) => {
+  console.log('Received event: %j', ev)
+  const { appId, formation } = ev
+  const appConfig = config[appId] || {}
+  const updates = appConfig[formation] || appConfig.default
 
-  heroku
-    .patch(`/apps/${appId}/formation`, { body: { updates } })
-    .then(apps => {
-      for (var app of apps) {
-        console.log(`Successfully scaled ${app.name} to ${app.quantity} dynos`)
-      }
-  
-      context.done()
-    })
-    .catch(err => {
-      console.error(`Failed to scale ${appId}`, err)
-      callback(err)
-    })
+  try {
+    if (!updates) { throw `No config error` }
+
+    const token = await decrypt(process.env.HEROKU_API_TOKEN)
+    const heroku = new Heroku({ token })
+
+    const reponse = await heroku.patch(`/apps/${appId}/formation`, { body: { updates } })
+
+    console.log(`Updated Formation for ${appId}`, reponse)
+
+    context.done()
+  } catch(err) {
+    console.error(`Failed to scale ${appId}`, err)
+    callback(err)
+  }
 }
